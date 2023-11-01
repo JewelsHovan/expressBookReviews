@@ -12,9 +12,17 @@ app.use("/customer",session({secret:"fingerprint_customer",resave: true, saveUni
 
 app.use("/customer/auth/*", function auth(req,res,next){
 //Write the authenication mechanism here
+    const token = req.headers('Authorization').replace('Bearer ','');
+    jwt.verify(token, 'fingerprint_customer', (err, decoded) => {
+        if (err) {
+          return res.status(401).send({ message: 'Unauthorized!' });
+        }
+        req.userId = decoded.id;
+        next();
+    });
 });
- 
-const PORT =5000;
+
+const PORT =6000;
 
 app.use("/customer", customer_routes);
 app.use("/", genl_routes);
