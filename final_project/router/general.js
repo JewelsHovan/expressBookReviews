@@ -68,4 +68,95 @@ public_users.get('/review/:isbn', function (req, res) {
   }
 });
 
+const axios = require('axios');
+
+// Using Promise callbacks
+public_users.get('/books-promise', (req, res) => {
+  axios.get('http://localhost:YOUR_PORT/')
+    .then(response => {
+      res.send(response.data);
+    })
+    .catch(error => {
+      res.status(500).send('Error fetching books');
+    });
+});
+
+// Using async/await
+public_users.get('/books-async', async (req, res) => {
+  try {
+    const response = await axios.get('http://localhost:YOUR_PORT/');
+    res.send(response.data);
+  } catch (error) {
+    res.status(500).send('Error fetching books');
+  }
+});
+
+// Using Promise callbacks
+public_users.get('/book-by-isbn-promise/:isbn', (req, res) => {
+  const isbn = req.params.isbn;
+  axios.get(`http://localhost:YOUR_PORT/isbn/${isbn}`)
+    .then(response => {
+      res.send(response.data);
+    })
+    .catch(error => {
+      res.status(500).send('Error fetching book by ISBN');
+    });
+});
+
+// Using async/await
+public_users.get('/book-by-isbn-async/:isbn', async (req, res) => {
+  const isbn = req.params.isbn;
+  try {
+    const response = await axios.get(`http://localhost:YOUR_PORT/isbn/${isbn}`);
+    res.send(response.data);
+  } catch (error) {
+    res.status(500).send('Error fetching book by ISBN');
+  }
+});
+
+// Using Promise callbacks
+public_users.get('/books-by-author-promise/:author', (req, res) => {
+  const author = req.params.author;
+  axios.get(`http://localhost:YOUR_PORT/author/${author}`)
+    .then(response => {
+      res.send(response.data);
+    })
+    .catch(error => {
+      res.status(500).send('Error fetching books by author');
+    });
+});
+
+// Using async/await
+public_users.get('/books-by-author-async/:author', async (req, res) => {
+  const author = req.params.author;
+  try {
+    const response = await axios.get(`http://localhost:YOUR_PORT/author/${author}`);
+    res.send(response.data);
+  } catch (error) {
+    res.status(500).send('Error fetching books by author');
+  }
+});
+
+public_users.get('/books-by-title-promise/:title', (req, res) => {
+  const title = req.params.title;
+  axios.get(`http://localhost:YOUR_PORT/title/${title}`)
+    .then(response => {
+      res.send(response.data);
+    })
+    .catch(error => {
+      res.status(500).send('Error fetching books by title');
+    });
+});
+
+// Using async/await
+public_users.get('/books-by-title-async/:title', async (req, res) => {
+  const title = req.params.title;
+  try {
+    const response = await axios.get(`http://localhost:YOUR_PORT/title/${title}`);
+    res.send(response.data);
+  } catch (error) {
+    res.status(500).send('Error fetching books by title');
+  }
+});
+
 module.exports.general = public_users;
