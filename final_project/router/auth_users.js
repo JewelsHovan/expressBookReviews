@@ -2,6 +2,7 @@ const express = require('express');
 const jwt = require('jsonwebtoken');
 let books = require("./booksdb.js");
 const regd_users = express.Router();
+
 const secretKey = 'fingerprint_customer'; // same as your session secret
 
 
@@ -21,7 +22,7 @@ regd_users.post("/login", (req, res) => {
   const username = req.body.username;
   const password = req.body.password;
   if (authenticatedUser(username, password)) {
-      const token = jwt.sign({ username: username }, secret, { expiresIn: '1h' });
+      const token = jwt.sign({ username: username }, secretKey, { expiresIn: '1h' });
       res.status(200).json({ message: "Login successful", token: token });
   } else {
       res.status(401).json({ message: "Invalid username or password" });

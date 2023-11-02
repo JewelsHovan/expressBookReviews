@@ -43,19 +43,29 @@ public_users.get('/author/:author',function (req, res) {
   for(let id in books){
     if(books[id].author === author){
       booksByAuthor.push(books[id]);
+        }
     }
     if(booksByAuthor.length > 0){
       res.send(JSON.stringify(booksByAuthor,null,4));
     }else{
-      res.send("No books found");
+      res.send(`No books found by author ${author}`);
     }
-  }
 });
 
 // Get all books based on title
 public_users.get('/title/:title',function (req, res) {
-  //Write your code here
-  return res.status(300).json({message: "Yet to be implemented"});
+  const title = req.params.title;
+  const bookByTitle = [];
+  for(let id in books){
+      if(books[id].title === title){
+          bookByTitle.push(books[id]);
+      }
+  }
+  if(bookByTitle.length > 0){
+      res.send(JSON.stringify(bookByTitle[0], null, 4));
+  } else{
+      res.send(`Book with title ${title} not found`)
+  }
 });
 
 //  Get book review
@@ -68,91 +78,47 @@ public_users.get('/review/:isbn', function (req, res) {
   }
 });
 
+
 const axios = require('axios');
+// Tasks -> using Async/await
 
-// Using Promise callbacks
-public_users.get('/books-promise', (req, res) => {
-  axios.get('http://localhost:YOUR_PORT/')
-    .then(response => {
-      res.send(response.data);
-    })
-    .catch(error => {
-      res.status(500).send('Error fetching books');
-    });
-});
-
-// Using async/await
+// Using async/await for getting List of Books available
 public_users.get('/books-async', async (req, res) => {
   try {
-    const response = await axios.get('http://localhost:YOUR_PORT/');
+    const response = await axios.get('https://julienh15-6000.theiadocker-3-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/');
     res.send(response.data);
   } catch (error) {
     res.status(500).send('Error fetching books');
   }
 });
 
-// Using Promise callbacks
-public_users.get('/book-by-isbn-promise/:isbn', (req, res) => {
-  const isbn = req.params.isbn;
-  axios.get(`http://localhost:YOUR_PORT/isbn/${isbn}`)
-    .then(response => {
-      res.send(response.data);
-    })
-    .catch(error => {
-      res.status(500).send('Error fetching book by ISBN');
-    });
-});
-
-// Using async/await
+// Using async/await get book based on ISBN
 public_users.get('/book-by-isbn-async/:isbn', async (req, res) => {
   const isbn = req.params.isbn;
   try {
-    const response = await axios.get(`http://localhost:YOUR_PORT/isbn/${isbn}`);
+    const response = await axios.get(`https://julienh15-6000.theiadocker-3-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/isbn/${isbn}`);
     res.send(response.data);
   } catch (error) {
     res.status(500).send('Error fetching book by ISBN');
   }
 });
 
-// Using Promise callbacks
-public_users.get('/books-by-author-promise/:author', (req, res) => {
-  const author = req.params.author;
-  axios.get(`http://localhost:YOUR_PORT/author/${author}`)
-    .then(response => {
-      res.send(response.data);
-    })
-    .catch(error => {
-      res.status(500).send('Error fetching books by author');
-    });
-});
-
-// Using async/await
+// Using async/await to get book details based on author
 public_users.get('/books-by-author-async/:author', async (req, res) => {
   const author = req.params.author;
   try {
-    const response = await axios.get(`http://localhost:YOUR_PORT/author/${author}`);
+    const response = await axios.get(`https://julienh15-6000.theiadocker-3-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/author/${author}`);
     res.send(response.data);
   } catch (error) {
     res.status(500).send('Error fetching books by author');
   }
 });
 
-public_users.get('/books-by-title-promise/:title', (req, res) => {
-  const title = req.params.title;
-  axios.get(`http://localhost:YOUR_PORT/title/${title}`)
-    .then(response => {
-      res.send(response.data);
-    })
-    .catch(error => {
-      res.status(500).send('Error fetching books by title');
-    });
-});
-
-// Using async/await
+// Using async/await getting book details based on Title
 public_users.get('/books-by-title-async/:title', async (req, res) => {
   const title = req.params.title;
   try {
-    const response = await axios.get(`http://localhost:YOUR_PORT/title/${title}`);
+    const response = await axios.get(`https://julienh15-6000.theiadocker-3-labs-prod-theiak8s-4-tor01.proxy.cognitiveclass.ai/title/${title}`);
     res.send(response.data);
   } catch (error) {
     res.status(500).send('Error fetching books by title');
